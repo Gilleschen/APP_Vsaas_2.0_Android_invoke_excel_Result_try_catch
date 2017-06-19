@@ -15,12 +15,14 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
+import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import com.experitest.appium.SeeTestAndroidDriver;
 import com.experitest.appium.SeeTestCapabilityType;
 import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.android.AndroidKeyCode;
 import io.appium.java_client.remote.AndroidMobileCapabilityType;
 import io.appium.java_client.remote.MobileCapabilityType;
 
@@ -125,6 +127,25 @@ public class method {
 			case "ScreenShot":
 				methodName = "ScreenShot";
 				break;
+
+			case "Orientation":
+				methodName = "Orientation";
+				appInput = TestCase.StepList.get(i + 1);
+				i = i + 1;
+				break;
+
+			case "Back":
+				methodName = "Back";
+				break;
+
+			case "Home":
+				methodName = "Home";
+				break;
+				
+			case"Power":
+				methodName="Power";
+				break;
+				
 			case "ResetAPP":
 				methodName = "ResetAPP";
 				break;
@@ -369,6 +390,7 @@ public class method {
 	}
 
 	public void ScreenShot() {
+
 		Calendar date = Calendar.getInstance();
 		String month = Integer.toString(date.get(Calendar.MONTH) + 1);
 		String day = Integer.toString(date.get(Calendar.DAY_OF_MONTH));
@@ -387,6 +409,18 @@ public class method {
 			}
 		}
 		CurrentCaseNumber = CurrentCaseNumber + 1;
+	}
+
+	public void Orientation() {
+
+		for (int i = 0; i < driver.length; i++) {
+			if (appInput.equals("Landscape")) {
+				driver[i].rotate(ScreenOrientation.LANDSCAPE);
+			} else if (appInput.equals("Portrait")) {
+				driver[i].rotate(ScreenOrientation.PORTRAIT);
+			}
+
+		}
 	}
 
 	public void QuitAPP() {
@@ -429,4 +463,23 @@ public class method {
 		}
 	}
 
+	public void Back() {
+		for (int i = 0; i < driver.length; i++) {
+			driver[i].pressKeyCode(AndroidKeyCode.BACK);
+		}
+	}
+
+	public void Home() {
+		for (int i = 0; i < driver.length; i++) {
+
+			driver[i].pressKeyCode(AndroidKeyCode.HOME);
+		}
+	}
+	
+	public void Power() {
+		for (int i = 0; i < driver.length; i++) {
+
+			driver[i].pressKeyCode(AndroidKeyCode.KEYCODE_POWER);
+		}
+	}
 }
