@@ -141,11 +141,11 @@ public class method {
 			case "Home":
 				methodName = "Home";
 				break;
-				
-			case"Power":
-				methodName="Power";
+
+			case "Power":
+				methodName = "Power";
 				break;
-				
+
 			case "ResetAPP":
 				methodName = "ResetAPP";
 				break;
@@ -172,6 +172,7 @@ public class method {
 				element[i] = driver[i].findElement(By.id(TestCase.DeviceInformation.appPackage + ":id/" + appElemnt))
 						.getText();
 			} catch (Exception e) {
+				System.out.println("[Error] Can't find " + appElemnt);
 				element[i] = "ERROR";// 找不到該物件，回傳Error
 			}
 
@@ -191,36 +192,7 @@ public class method {
 				}
 			}
 		}
-		// 開啟Excel
-		try {
-			workBook = new XSSFWorkbook(new FileInputStream("C:\\TestReport\\TestReport.xlsm"));
-
-		} catch (Exception e) {
-			;
-		}
-		for (int i = 0; i < driver.length; i++) {
-			Sheet = workBook.getSheet(TestCase.DeviceInformation.deviceName.get(i) + "_TestReport");// 指定某台裝置的TestReport
-																									// sheet
-			if (ErrorResult[i] == true) {
-				Sheet.getRow(CurrentCaseNumber + 1).createCell(1).setCellValue("Error!!");
-			} else if (result[i] == true) {
-				Sheet.getRow(CurrentCaseNumber + 1).createCell(1).setCellValue("Pass");
-			} else if (result[i] == false) {
-				Sheet.getRow(CurrentCaseNumber + 1).createCell(1).setCellValue("Fail");
-			}
-		}
-		// 執行寫入Excel後的存檔動作
-		try {
-			FileOutputStream out = new FileOutputStream(new File("C:\\TestReport\\TestReport.xlsm"));
-
-			workBook.write(out);
-			out.close();
-			workBook.close();
-
-		} catch (Exception e) {
-			;
-		}
-
+		SubMethod_Result(ErrorResult, result);// 呼叫submethod_result儲存測試結果於Excel
 		CurrentCaseNumber = CurrentCaseNumber + 1;
 
 	}
@@ -234,6 +206,7 @@ public class method {
 			try {
 				element[i] = driver[i].findElement(By.xpath(appElemnt)).getAttribute("content-desc");
 			} catch (Exception e) {
+				System.out.println("[Error] Can't find " + appElemnt);
 				element[i] = "ERROR";// 找不到該物件，回傳Error
 			}
 
@@ -254,35 +227,7 @@ public class method {
 			}
 
 		}
-		// 開啟Excel
-		try {
-			workBook = new XSSFWorkbook(new FileInputStream("C:\\TestReport\\TestReport.xlsm"));
-
-		} catch (Exception e) {
-			;
-		}
-		for (int i = 0; i < driver.length; i++) {
-			Sheet = workBook.getSheet(TestCase.DeviceInformation.deviceName.get(i) + "_TestReport");// 指定某台裝置的TestReport
-																									// sheet
-			if (ErrorResult[i] == true) {
-				Sheet.getRow(CurrentCaseNumber + 1).createCell(1).setCellValue("Error!!");
-			} else if (result[i] == true) {
-				Sheet.getRow(CurrentCaseNumber + 1).createCell(1).setCellValue("Pass");
-			} else if (result[i] == false) {
-				Sheet.getRow(CurrentCaseNumber + 1).createCell(1).setCellValue("Fail");
-			}
-		}
-		// 執行寫入Excel後的存檔動作
-		try {
-			FileOutputStream out = new FileOutputStream(new File("C:\\TestReport\\TestReport.xlsm"));
-
-			workBook.write(out);
-			out.close();
-			workBook.close();
-
-		} catch (Exception e) {
-			;
-		}
+		SubMethod_Result(ErrorResult, result);
 
 		CurrentCaseNumber = CurrentCaseNumber + 1;
 
@@ -296,7 +241,7 @@ public class method {
 				wait[i].until(ExpectedConditions
 						.presenceOfElementLocated(By.id(TestCase.DeviceInformation.appPackage + ":id/" + appElemnt)));
 			} catch (Exception e) {
-				System.out.println("Error");
+				System.out.println("[Error] Can't find " + appElemnt);
 			}
 		}
 	}
@@ -308,7 +253,7 @@ public class method {
 			try {
 				wait[i].until(ExpectedConditions.presenceOfElementLocated(By.xpath(appElemnt)));
 			} catch (Exception e) {
-				;
+				System.out.println("[Error] Can't find " + appElemnt);
 			}
 		}
 	}
@@ -319,7 +264,7 @@ public class method {
 				driver[i].findElement(By.id(TestCase.DeviceInformation.appPackage + ":id/" + appElemnt));
 
 			} catch (Exception e) {
-				;
+				System.out.println("[Error] Can't find " + appElemnt);
 			}
 		}
 	}
@@ -329,7 +274,7 @@ public class method {
 			try {
 				driver[i].findElement(By.id(TestCase.DeviceInformation.appPackage + ":id/" + appElemnt)).click();
 			} catch (Exception e) {
-				;
+				System.out.println("[Error] Can't find " + appElemnt);
 			}
 
 		}
@@ -340,7 +285,7 @@ public class method {
 			try {
 				driver[i].findElement(By.xpath(appElemnt)).sendKeys(appInput);
 			} catch (Exception e) {
-				;
+				System.out.println("[Error] Can't find " + appElemnt);
 			}
 
 		}
@@ -351,7 +296,7 @@ public class method {
 			try {
 				driver[i].findElement(By.xpath(appElemnt)).click();
 			} catch (Exception e) {
-				;
+				System.out.println("[Error] Can't find " + appElemnt);
 			}
 
 		}
@@ -408,7 +353,7 @@ public class method {
 				;
 			}
 		}
-		CurrentCaseNumber = CurrentCaseNumber + 1;
+
 	}
 
 	public void Orientation() {
@@ -419,7 +364,6 @@ public class method {
 			} else if (appInput.equals("Portrait")) {
 				driver[i].rotate(ScreenOrientation.PORTRAIT);
 			}
-
 		}
 	}
 
@@ -451,11 +395,13 @@ public class method {
 				cap[i].setCapability(AndroidMobileCapabilityType.APP_PACKAGE, TestCase.DeviceInformation.appPackage);
 				cap[i].setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, TestCase.DeviceInformation.appActivity);
 				cap[i].setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, command_timeout);
+				cap[i].setCapability(MobileCapabilityType.LANGUAGE,"LAN_ENG");
 
 				try {
 					driver[j] = new SeeTestAndroidDriver<>(new URL("http://localhost:" + port + "/wd/hub"), cap[j]);
 				} catch (MalformedURLException e) {
-					;
+					System.out.print("[Error] Can't find UDID: " + TestCase.DeviceInformation.deviceName.get(i));
+					System.out.println("or can't find appPackage: " + TestCase.DeviceInformation.appPackage);
 				}
 				break;
 			}
@@ -475,11 +421,49 @@ public class method {
 			driver[i].pressKeyCode(AndroidKeyCode.HOME);
 		}
 	}
-	
+
 	public void Power() {
 		for (int i = 0; i < driver.length; i++) {
 
 			driver[i].pressKeyCode(AndroidKeyCode.KEYCODE_POWER);
+		}
+	}
+
+	public void SubMethod_Result(boolean ErrorResult[], boolean result[]) {
+		// 開啟Excel
+		try {
+			workBook = new XSSFWorkbook(new FileInputStream("C:\\TestReport\\TestReport.xlsm"));
+		} catch (Exception e) {
+			System.out.println("[Error] Can't find C:\\TestReport\\TestReport.xlsm");
+		}
+		for (int i = 0; i < driver.length; i++) {
+
+			if (TestCase.DeviceInformation.deviceName.get(i).toString().length() > 20) {// Excel工作表名稱最常31字元因，故需判斷UDID長度是否大於31
+				char[] NewUdid = new char[20];// 因需包含_TestReport字串(共11字元)，故設定20位字元陣列(31-11)
+				TestCase.DeviceInformation.deviceName.get(i).toString().getChars(0, 20, NewUdid, 0);// 取出UDID前20字元給NewUdid
+				Sheet = workBook.getSheet(String.valueOf(NewUdid) + "_TestReport");// 根據NewUdid，指定某台裝置的TestReport
+																					// sheet
+			} else {
+				Sheet = workBook.getSheet(TestCase.DeviceInformation.deviceName.get(i).toString() + "_TestReport");// 指定某台裝置的TestReport
+																													// sheet
+			}
+
+			if (ErrorResult[i] == true) {
+				Sheet.getRow(CurrentCaseNumber + 1).createCell(1).setCellValue("Error!!");
+			} else if (result[i] == true) {
+				Sheet.getRow(CurrentCaseNumber + 1).createCell(1).setCellValue("Pass");
+			} else if (result[i] == false) {
+				Sheet.getRow(CurrentCaseNumber + 1).createCell(1).setCellValue("Fail");
+			}
+		}
+		// 執行寫入Excel後的存檔動作
+		try {
+			FileOutputStream out = new FileOutputStream(new File("C:\\TestReport\\TestReport.xlsm"));
+			workBook.write(out);
+			out.close();
+			workBook.close();
+		} catch (Exception e) {
+			System.out.println("[Error] Can't find C:\\TestReport\\TestReport.xlsm");
 		}
 	}
 }

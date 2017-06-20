@@ -38,8 +38,10 @@ public class LoadTestCase {
 								break;
 							} else {
 
-								//StepList.add(sheet.getRow(i).getCell(j).toString());// 從指定待測試腳本的sheet中儲存測試案例的步驟
-								StepList.add(sheet.getRow(i).getCell(j).toString());// 從指定待測試腳本的sheet中儲存測試案例的步驟 getStringCellValue()
+								// StepList.add(sheet.getRow(i).getCell(j).toString());//
+								// 從指定待測試腳本的sheet中儲存測試案例的步驟
+								StepList.add(sheet.getRow(i).getCell(j).toString());// 從指定待測試腳本的sheet中儲存測試案例的步驟
+																					// getStringCellValue()
 							}
 						}
 
@@ -57,7 +59,15 @@ public class LoadTestCase {
 		System.out.println("測試步驟：" + StepList);
 		// 建立各裝置的Test Report
 		for (int i = 0; i < DeviceInformation.deviceName.size(); i++) {
-			sheet = workbook.createSheet(DeviceInformation.deviceName.get(i).toString() + "_TestReport");
+
+			if (DeviceInformation.deviceName.get(i).toString().length() > 20) {// Excel工作表名稱最常31字元因，故需判斷UDID長度是否大於31
+				char[] NewUdid = new char[20];// 因需包含_TestReport字串(共11字元)，故設定20位字元陣列(31-11)
+				DeviceInformation.deviceName.get(i).toString().getChars(0, 20, NewUdid, 0);// 取出UDID前20字元給NewUdid
+				sheet = workbook.createSheet(String.valueOf(NewUdid) + "_TestReport");// 使用NewUdid命名新工作表
+			} else {
+				sheet = workbook.createSheet(DeviceInformation.deviceName.get(i).toString() + "_TestReport");
+			}
+
 			sheet.createRow(0).createCell(0).setCellValue("CaseName");
 			sheet.getRow(0).createCell(1).setCellValue("Result");
 
