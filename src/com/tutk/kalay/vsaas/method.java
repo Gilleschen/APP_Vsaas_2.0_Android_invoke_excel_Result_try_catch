@@ -353,7 +353,6 @@ public class method {
 				;
 			}
 		}
-
 	}
 
 	public void Orientation() {
@@ -395,7 +394,7 @@ public class method {
 				cap[i].setCapability(AndroidMobileCapabilityType.APP_PACKAGE, TestCase.DeviceInformation.appPackage);
 				cap[i].setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, TestCase.DeviceInformation.appActivity);
 				cap[i].setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, command_timeout);
-				cap[i].setCapability(MobileCapabilityType.LANGUAGE,"LAN_ENG");
+				cap[i].setCapability(MobileCapabilityType.LANGUAGE, "LAN_ENG");
 
 				try {
 					driver[j] = new SeeTestAndroidDriver<>(new URL("http://localhost:" + port + "/wd/hub"), cap[j]);

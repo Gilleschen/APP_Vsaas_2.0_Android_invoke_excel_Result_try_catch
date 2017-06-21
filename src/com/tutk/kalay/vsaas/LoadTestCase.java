@@ -40,8 +40,8 @@ public class LoadTestCase {
 
 								// StepList.add(sheet.getRow(i).getCell(j).toString());//
 								// 眖﹚代刚竲セsheetい纗代刚ㄒ˙艼
-								StepList.add(sheet.getRow(i).getCell(j).toString());// 眖﹚代刚竲セsheetい纗代刚ㄒ˙艼
-																					// getStringCellValue()
+								StepList.add(sheet.getRow(i).getCell(j).getStringCellValue());// 眖﹚代刚竲セsheetい纗代刚ㄒ˙艼 Excel计璶锣Θ﹃篈
+																				
 							}
 						}
 
