@@ -92,8 +92,3 @@
 範例測試結果如下圖：
 
 ![image](https://github.com/Gilleschen/APP_Vsaas_2.0_Android_invoke_excel_Result_try_catch/blob/master/picture/Testreport_example.PNG)
-
-
-
-
-
