@@ -79,7 +79,7 @@
 
 方法一：執行method Class中main方法
 
-方法二：$ java -jar APP_Vsaas_2.0_Android_invoke_excel_Result_try_catch.jar
+方法二：$ java -jar APP_Android.jar
 
 #### 測試報告
 
