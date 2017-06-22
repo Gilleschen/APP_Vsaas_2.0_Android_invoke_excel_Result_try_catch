@@ -57,7 +57,7 @@
 
         Sleep=>閒置APP n秒鐘
   
-腳本範例如下圖：
+範例腳本如下圖：
 
 ![image](https://github.com/Gilleschen/APP_Vsaas_2.0_Android_invoke_excel_Result_try_catch/blob/master/picture/Testcase_example.PNG)
   
@@ -85,7 +85,7 @@
 
 1. 開啟C:\TestReport\TestReport.xlsm
 
-2. 根據手機UDID自動建立TestReport工作表如下圖： (e.g. abc123ABC123_TestReport)
+2. 根據手機UDID自動建立TestReport工作表，如下圖： (e.g. abc123ABC123_TestReport)
 
 ![image](https://github.com/Gilleschen/APP_Vsaas_2.0_Android_invoke_excel_Result_try_catch/blob/master/picture/Testreport_sheet_example.PNG)
 
