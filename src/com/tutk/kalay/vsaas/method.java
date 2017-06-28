@@ -15,12 +15,16 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import com.experitest.appium.SeeTestAndroidDriver;
 import com.experitest.appium.SeeTestCapabilityType;
+
+import io.appium.java_client.MobileElement;
+import io.appium.java_client.SwipeElementDirection;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidKeyCode;
 import io.appium.java_client.remote.AndroidMobileCapabilityType;
@@ -37,6 +41,7 @@ public class method {
 	static XSSFWorkbook workBook;
 	static String appElemnt;// APP元件名稱
 	static String appInput;// 輸入值
+	static String toElemnt;// APP元件名稱
 	// static int InputSec;
 	String element[] = new String[driver.length];
 	static int CurrentCaseNumber = -1;// 目前執行到第幾個測試案列
@@ -46,7 +51,7 @@ public class method {
 			IllegalArgumentException, InvocationTargetException, InstantiationException {
 
 		invokeFunction();
-		System.out.println("測試結束!!!!!!!!");
+		System.out.println("測試結束!!!!!!!s!");
 
 	}
 
@@ -76,6 +81,13 @@ public class method {
 				appElemnt = TestCase.StepList.get(i + 1);
 				i = i + 1;
 				break;
+				
+			case "Byid_Swipe":
+				methodName = "Byid_Swipe";
+				appElemnt = TestCase.StepList.get(i + 1);
+				toElemnt = TestCase.StepList.get(i + 2);
+				i = i + 2;
+				break;		
 
 			case "ByXpath_SendKey":
 				methodName = "ByXpath_SendKey";
@@ -88,6 +100,13 @@ public class method {
 				methodName = "ByXpath_Click";
 				appElemnt = TestCase.StepList.get(i + 1);
 				i = i + 1;
+				break;
+				
+			case "ByXpath_Swipe":
+				methodName = "ByXpath_Swipe";
+				appElemnt = TestCase.StepList.get(i + 1);
+				toElemnt = TestCase.StepList.get(i + 2);
+				i = i + 2;
 				break;
 
 			case "Byid_Wait":
@@ -146,6 +165,8 @@ public class method {
 				methodName = "Power";
 				break;
 
+
+				
 			case "ResetAPP":
 				methodName = "ResetAPP";
 				break;
@@ -193,7 +214,7 @@ public class method {
 			}
 		}
 		SubMethod_Result(ErrorResult, result);// 呼叫submethod_result儲存測試結果於Excel
-		//CurrentCaseNumber = CurrentCaseNumber + 1;
+		// CurrentCaseNumber = CurrentCaseNumber + 1;
 
 	}
 
@@ -229,7 +250,7 @@ public class method {
 		}
 		SubMethod_Result(ErrorResult, result);
 
-		//CurrentCaseNumber = CurrentCaseNumber + 1;
+		// CurrentCaseNumber = CurrentCaseNumber + 1;
 
 	}
 
@@ -394,9 +415,9 @@ public class method {
 				cap[i].setCapability(AndroidMobileCapabilityType.APP_PACKAGE, TestCase.DeviceInformation.appPackage);
 				cap[i].setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, TestCase.DeviceInformation.appActivity);
 				cap[i].setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, command_timeout);
-				cap[i].setCapability(SeeTestCapabilityType.REPORT_FORMAT,"xml");
-				cap[i].setCapability(SeeTestCapabilityType.REPORT_DIRECTORY, "C:\\TestReport");//Report路徑
-				cap[i].setCapability(SeeTestCapabilityType.TEST_NAME, TestCase.CaseList.get(CurrentCaseNumber));//TestCase名稱
+				cap[i].setCapability(SeeTestCapabilityType.REPORT_FORMAT, "xml");
+				cap[i].setCapability(SeeTestCapabilityType.REPORT_DIRECTORY, "C:\\TestReport");// Report路徑
+				cap[i].setCapability(SeeTestCapabilityType.TEST_NAME, TestCase.CaseList.get(CurrentCaseNumber));// TestCase名稱
 
 				try {
 					driver[j] = new SeeTestAndroidDriver<>(new URL("http://localhost:" + port + "/wd/hub"), cap[j]);
@@ -427,6 +448,38 @@ public class method {
 		for (int i = 0; i < driver.length; i++) {
 
 			driver[i].pressKeyCode(AndroidKeyCode.KEYCODE_POWER);
+		}
+	}
+
+	public void ByXpath_Swipe() {
+		Point p1, p2;// p1 為起點;p2為終點
+
+		for (int i = 0; i < driver.length; i++) {
+			try {
+				p2 = driver[i].findElement(By.xpath(toElemnt)).getLocation();
+				p1 = driver[i].findElement(By.xpath(appElemnt)).getLocation();
+				driver[i].swipe(p1.x, p1.y, p1.x, p1.y - (p1.y - p2.y), 1000);
+			} catch (Exception e) {
+				System.out.println("[Error] Can't find " + appElemnt);
+				System.out.println("[Error] or Can't find " + toElemnt);
+			}
+
+		}
+	}
+	
+	public void Byid_Swipe() {
+		Point p1, p2;// p1 為起點;p2為終點
+
+		for (int i = 0; i < driver.length; i++) {
+			try {
+				p2 = driver[i].findElement(By.id(TestCase.DeviceInformation.appPackage + ":id/" + toElemnt)).getLocation();
+				p1 = driver[i].findElement(By.id(TestCase.DeviceInformation.appPackage + ":id/" + appElemnt)).getLocation();
+				driver[i].swipe(p1.x, p1.y, p1.x, p1.y - (p1.y - p2.y), 1000);
+			} catch (Exception e) {
+				System.out.println("[Error] Can't find " + appElemnt);
+				System.out.println("[Error] or Can't find " + toElemnt);
+			}
+
 		}
 	}
 
