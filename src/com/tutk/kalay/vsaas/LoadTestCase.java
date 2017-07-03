@@ -41,7 +41,6 @@ public class LoadTestCase {
 								// StepList.add(sheet.getRow(i).getCell(j).toString());//
 								// 從指定待測試腳本的sheet中儲存測試案例的步驟
 								StepList.add(sheet.getRow(i).getCell(j).getStringCellValue());// 從指定待測試腳本的sheet中儲存測試案例的步驟 Excel數字要轉成字串型態
-																				
 							}
 						}
 
@@ -55,7 +54,7 @@ public class LoadTestCase {
 		} catch (Exception e) {
 			;
 		}
-
+		
 		System.out.println("測試步驟：" + StepList);
 		// 建立各裝置的Test Report
 		for (int i = 0; i < DeviceInformation.deviceName.size(); i++) {

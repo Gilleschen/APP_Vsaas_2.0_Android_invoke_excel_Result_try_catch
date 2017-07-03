@@ -31,12 +31,12 @@ import io.appium.java_client.remote.AndroidMobileCapabilityType;
 import io.appium.java_client.remote.MobileCapabilityType;
 
 public class method {
-	int port = 8889;// Appium studio port
+	int port = 4723;// Appium studio port
 	int device_timeout = 60;// 60sec
 	int command_timeout = 30;// 30sec
 	LoadExpectResult ExpectResult = new LoadExpectResult();
 	static LoadTestCase TestCase = new LoadTestCase();
-	static AndroidDriver driver[] = new AndroidDriver[TestCase.DeviceInformation.deviceName.size()];
+	static SeeTestAndroidDriver driver[] = new SeeTestAndroidDriver[TestCase.DeviceInformation.deviceName.size()];
 	WebDriverWait[] wait = new WebDriverWait[driver.length];
 	static XSSFWorkbook workBook;
 	static String appElemnt;// APP元件名稱
@@ -51,7 +51,7 @@ public class method {
 			IllegalArgumentException, InvocationTargetException, InstantiationException {
 
 		invokeFunction();
-		System.out.println("測試結束!!!!!!!s!");
+		System.out.println("測試結束!!!!!!!!");
 
 	}
 
@@ -81,13 +81,13 @@ public class method {
 				appElemnt = TestCase.StepList.get(i + 1);
 				i = i + 1;
 				break;
-				
+
 			case "Byid_Swipe":
 				methodName = "Byid_Swipe";
 				appElemnt = TestCase.StepList.get(i + 1);
 				toElemnt = TestCase.StepList.get(i + 2);
 				i = i + 2;
-				break;		
+				break;
 
 			case "ByXpath_SendKey":
 				methodName = "ByXpath_SendKey";
@@ -101,7 +101,7 @@ public class method {
 				appElemnt = TestCase.StepList.get(i + 1);
 				i = i + 1;
 				break;
-				
+
 			case "ByXpath_Swipe":
 				methodName = "ByXpath_Swipe";
 				appElemnt = TestCase.StepList.get(i + 1);
@@ -165,8 +165,6 @@ public class method {
 				methodName = "Power";
 				break;
 
-
-				
 			case "ResetAPP":
 				methodName = "ResetAPP";
 				break;
@@ -466,14 +464,16 @@ public class method {
 
 		}
 	}
-	
+
 	public void Byid_Swipe() {
 		Point p1, p2;// p1 為起點;p2為終點
 
 		for (int i = 0; i < driver.length; i++) {
 			try {
-				p2 = driver[i].findElement(By.id(TestCase.DeviceInformation.appPackage + ":id/" + toElemnt)).getLocation();
-				p1 = driver[i].findElement(By.id(TestCase.DeviceInformation.appPackage + ":id/" + appElemnt)).getLocation();
+				p2 = driver[i].findElement(By.id(TestCase.DeviceInformation.appPackage + ":id/" + toElemnt))
+						.getLocation();
+				p1 = driver[i].findElement(By.id(TestCase.DeviceInformation.appPackage + ":id/" + appElemnt))
+						.getLocation();
 				driver[i].swipe(p1.x, p1.y, p1.x, p1.y - (p1.y - p2.y), 1000);
 			} catch (Exception e) {
 				System.out.println("[Error] Can't find " + appElemnt);
