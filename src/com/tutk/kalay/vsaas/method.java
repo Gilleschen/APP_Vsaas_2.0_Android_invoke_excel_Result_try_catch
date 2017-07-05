@@ -9,6 +9,7 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Calendar;
+import java.util.Random;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -42,7 +43,8 @@ public class method {
 	static String appElemnt;// APP元件名稱
 	static String appInput;// 輸入值
 	static String toElemnt;// APP元件名稱
-	// static int InputSec;
+	static int startx, starty, endx, endy;// Swipe移動座標
+	static int iterative;// 畫面滑動次數
 	String element[] = new String[driver.length];
 	static int CurrentCaseNumber = -1;// 目前執行到第幾個測試案列
 	XSSFSheet Sheet;
@@ -153,6 +155,16 @@ public class method {
 				i = i + 1;
 				break;
 
+			case "Swipe":
+				methodName = "Swipe";
+				startx = Integer.valueOf(TestCase.StepList.get(i + 1));
+				starty = Integer.valueOf(TestCase.StepList.get(i + 2));
+				endx = Integer.valueOf(TestCase.StepList.get(i + 3));
+				endy = Integer.valueOf(TestCase.StepList.get(i + 4));
+				iterative = Integer.valueOf(TestCase.StepList.get(i + 5));
+				i = i + 5;
+				break;
+
 			case "Back":
 				methodName = "Back";
 				break;
@@ -172,7 +184,6 @@ public class method {
 			case "QuitAPP":
 				methodName = "QuitAPP";
 				break;
-
 			}
 
 			Method method;
@@ -253,7 +264,7 @@ public class method {
 	}
 
 	public void Byid_Wait() {
-		// WebDriverWait[] wait = new WebDriverWait[driver.length];
+
 		for (int i = 0; i < driver.length; i++) {
 			wait[i] = new WebDriverWait(driver[i], device_timeout);
 			try {
@@ -266,11 +277,12 @@ public class method {
 	}
 
 	public void ByXpath_Wait() {
-		// WebDriverWait[] wait = new WebDriverWait[driver.length];
+
 		for (int i = 0; i < driver.length; i++) {
 			wait[i] = new WebDriverWait(driver[i], device_timeout);
 			try {
 				wait[i].until(ExpectedConditions.presenceOfElementLocated(By.xpath(appElemnt)));
+				wait[i].until(ExpectedConditions.elementToBeClickable(By.xpath(appElemnt)));
 			} catch (Exception e) {
 				System.out.println("[Error] Can't find " + appElemnt);
 			}
@@ -409,16 +421,17 @@ public class method {
 			for (int j = i; j < TestCase.DeviceInformation.platformVersion.size(); j++) {
 
 				cap[i].setCapability(SeeTestCapabilityType.WAIT_FOR_DEVICE_TIMEOUT_MILLIS, device_timeout * 1000);
+				cap[i].setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, command_timeout);
 				cap[i].setCapability(MobileCapabilityType.UDID, TestCase.DeviceInformation.deviceName.get(i));
 				cap[i].setCapability(AndroidMobileCapabilityType.APP_PACKAGE, TestCase.DeviceInformation.appPackage);
 				cap[i].setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, TestCase.DeviceInformation.appActivity);
-				cap[i].setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, command_timeout);
+
 				cap[i].setCapability(SeeTestCapabilityType.REPORT_FORMAT, "xml");
 				cap[i].setCapability(SeeTestCapabilityType.REPORT_DIRECTORY, "C:\\TestReport");// Report路徑
 				cap[i].setCapability(SeeTestCapabilityType.TEST_NAME, TestCase.CaseList.get(CurrentCaseNumber));// TestCase名稱
 
 				try {
-					driver[j] = new SeeTestAndroidDriver<>(new URL("http://localhost:" + port + "/wd/hub"), cap[j]);
+					driver[j] = new SeeTestAndroidDriver(new URL("http://localhost:" + port + "/wd/hub"), cap[j]);
 				} catch (Exception e) {
 					System.out.print("[Error] Can't find UDID: " + TestCase.DeviceInformation.deviceName.get(i));
 					System.out.println("or can't find appPackage: " + TestCase.DeviceInformation.appPackage);
@@ -461,7 +474,6 @@ public class method {
 				System.out.println("[Error] Can't find " + appElemnt);
 				System.out.println("[Error] or Can't find " + toElemnt);
 			}
-
 		}
 	}
 
@@ -482,6 +494,25 @@ public class method {
 
 		}
 	}
+
+	public void Swipe() {
+		for (int i = 0; i < driver.length; i++) {
+			for (int j = 0; j < iterative; j++) {
+				// driver[i].swipe(startx, starty, startx - (startx - endx),
+				// starty - (starty - endy), 500);
+				driver[i].swipe(startx, starty, endx, endy, 500);
+			}
+		}
+	}
+
+	/*
+	 * 上下隨機滑動n次 public void Swipe() { Random rand = new Random(); boolean
+	 * items[] = { true, false }; for (int i = 0; i < driver.length; i++) { for
+	 * (int j = 0; j < iterative; j++) { if (items[rand.nextInt(items.length)])
+	 * { driver[i].swipe(startx, starty, endx, endy, 500); }else{
+	 * driver[i].swipe(endx, endy, startx , starty , 500); } } } }
+	 * 
+	 */
 
 	public void SubMethod_Result(boolean ErrorResult[], boolean result[]) {
 		// 開啟Excel
