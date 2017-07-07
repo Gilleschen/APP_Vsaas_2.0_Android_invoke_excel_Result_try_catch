@@ -15,6 +15,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.ScreenOrientation;
@@ -45,6 +46,7 @@ public class method {
 	static String toElemnt;// APP元件名稱
 	static int startx, starty, endx, endy;// Swipe移動座標
 	static int iterative;// 畫面滑動次數
+	static String scroll;// 畫面捲動方向
 	String element[] = new String[driver.length];
 	static int CurrentCaseNumber = -1;// 目前執行到第幾個測試案列
 	XSSFSheet Sheet;
@@ -164,6 +166,22 @@ public class method {
 				iterative = Integer.valueOf(TestCase.StepList.get(i + 5));
 				i = i + 5;
 				break;
+				
+			case "ByXpath_Swipe_Vertical":
+				methodName = "ByXpath_Swipe_Vertical";
+				appElemnt = TestCase.StepList.get(i + 1);
+				scroll = TestCase.StepList.get(i + 2);
+				iterative = Integer.valueOf(TestCase.StepList.get(i + 3));
+				i = i + 3;
+				break;
+
+			case "ByXpath_Swipe_Horizontal":
+				methodName = "ByXpath_Swipe_Horizontal";
+				appElemnt = TestCase.StepList.get(i + 1);
+				scroll = TestCase.StepList.get(i + 2);
+				iterative = Integer.valueOf(TestCase.StepList.get(i + 3));
+				i = i + 3;
+				break;
 
 			case "Back":
 				methodName = "Back";
@@ -184,6 +202,7 @@ public class method {
 			case "QuitAPP":
 				methodName = "QuitAPP";
 				break;
+
 			}
 
 			Method method;
@@ -498,9 +517,83 @@ public class method {
 	public void Swipe() {
 		for (int i = 0; i < driver.length; i++) {
 			for (int j = 0; j < iterative; j++) {
-				// driver[i].swipe(startx, starty, startx - (startx - endx),
-				// starty - (starty - endy), 500);
 				driver[i].swipe(startx, starty, endx, endy, 500);
+			}
+		}
+	}
+
+	// 未加入invoke function
+	public void Byid_Swipe_Vertical() {
+		Point p;// 元件座標
+		Dimension s;// 元件大小
+		for (int i = 0; i < driver.length; i++) {
+
+			s = driver[i].findElement(By.id(TestCase.DeviceInformation.appPackage + ":id/" + appElemnt)).getSize();
+			p = driver[i].findElement(By.id(TestCase.DeviceInformation.appPackage + ":id/" + appElemnt)).getLocation();
+			int errorX = (int) Math.round(s.width * 0.01);
+			int errorY = (int) Math.round(s.height * 0.01);
+			for (int j = 0; j < iterative; j++) {
+				if (scroll.equals("DOWN")) {// 畫面向下捲動
+					driver[i].swipe(p.x + errorX, s.height - errorY, p.x + errorX, p.y + errorY, 1000);
+				} else if (scroll.equals("UP")) {// 畫面向上捲動
+					driver[i].swipe(p.x + errorX, p.y + errorY, p.x + errorX, s.height - errorY, 1000);
+				}
+			}
+
+		}
+	}
+
+	public void ByXpath_Swipe_Vertical() {
+		Point p;// 元件座標
+		Dimension s;// 元件大小
+		for (int i = 0; i < driver.length; i++) {
+			s = driver[i].findElement(By.xpath(appElemnt)).getSize();
+			p = driver[i].findElement(By.xpath(appElemnt)).getLocation();
+			int errorX = (int) Math.round(s.width * 0.01);
+			int errorY = (int) Math.round(s.height * 0.01);
+			for (int j = 0; j < iterative; j++) {
+				if (scroll.equals("DOWN")) {// 畫面向下捲動
+					driver[i].swipe(p.x + errorX, s.height - errorY, p.x + errorX, p.y + errorY, 1000);
+				} else if (scroll.equals("UP")) {// 畫面向上捲動
+					driver[i].swipe(p.x + errorX, p.y + errorY, p.x + errorX, s.height - errorY, 1000);
+				}
+			}
+		}
+	}
+
+	// 未加入invoke function
+	public void Byid_Swipe_Horizontal() {
+		Point p;// 元件座標
+		Dimension s;// 元件大小
+		for (int i = 0; i < driver.length; i++) {
+			s = driver[i].findElement(By.id(TestCase.DeviceInformation.appPackage + ":id/" + appElemnt)).getSize();
+			p = driver[i].findElement(By.id(TestCase.DeviceInformation.appPackage + ":id/" + appElemnt)).getLocation();
+			int errorX = (int) Math.round(s.getWidth() * 0.01);
+			int errorY = (int) Math.round(s.getHeight() * 0.01);
+			for (int j = 0; j < iterative; j++) {
+				if (scroll.equals("RIGHT")) {// 畫面向右捲動
+					driver[i].swipe(p.x + errorX, p.y + errorY, s.width - errorX, p.y + errorY, 1000);
+				} else if (scroll.equals("LEFT")) {// 畫面向左捲動
+					driver[i].swipe(s.width - errorX, p.y + errorY, p.x + errorX, p.y + errorY, 1000);
+				}
+			}
+		}
+	}
+
+	public void ByXpath_Swipe_Horizontal() {
+		Point p;// 元件座標
+		Dimension s;// 元件大小
+		for (int i = 0; i < driver.length; i++) {
+			s = driver[i].findElement(By.xpath(appElemnt)).getSize();
+			p = driver[i].findElement(By.xpath(appElemnt)).getLocation();
+			int errorX = (int) Math.round(s.getWidth() * 0.01);
+			int errorY = (int) Math.round(s.getHeight() * 0.01);
+			for (int j = 0; j < iterative; j++) {
+				if (scroll.equals("RIGHT")) {// 畫面向右捲動
+					driver[i].swipe(p.x + errorX, p.y + errorY, s.width - errorX, p.y + errorY, 1000);
+				} else if (scroll.equals("LEFT")) {// 畫面向左捲動
+					driver[i].swipe(s.width - errorX, p.y + errorY, p.x + errorX, p.y + errorY, 1000);
+				}
 			}
 		}
 	}
