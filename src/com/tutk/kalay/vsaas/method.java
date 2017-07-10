@@ -19,6 +19,7 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.ScreenOrientation;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -166,7 +167,7 @@ public class method {
 				iterative = Integer.valueOf(TestCase.StepList.get(i + 5));
 				i = i + 5;
 				break;
-				
+
 			case "ByXpath_Swipe_Vertical":
 				methodName = "ByXpath_Swipe_Vertical";
 				appElemnt = TestCase.StepList.get(i + 1);
@@ -301,7 +302,6 @@ public class method {
 			wait[i] = new WebDriverWait(driver[i], device_timeout);
 			try {
 				wait[i].until(ExpectedConditions.presenceOfElementLocated(By.xpath(appElemnt)));
-				wait[i].until(ExpectedConditions.elementToBeClickable(By.xpath(appElemnt)));
 			} catch (Exception e) {
 				System.out.println("[Error] Can't find " + appElemnt);
 			}
@@ -326,7 +326,6 @@ public class method {
 			} catch (Exception e) {
 				System.out.println("[Error] Can't find " + appElemnt);
 			}
-
 		}
 	}
 
@@ -337,7 +336,6 @@ public class method {
 			} catch (Exception e) {
 				System.out.println("[Error] Can't find " + appElemnt);
 			}
-
 		}
 	}
 
@@ -348,7 +346,6 @@ public class method {
 			} catch (Exception e) {
 				System.out.println("[Error] Can't find " + appElemnt);
 			}
-
 		}
 	}
 
@@ -374,7 +371,7 @@ public class method {
 				break;// 是，跳出迴圈
 			}
 		}
-		// int t = Integer.valueOf(s) * 1000;
+
 		try {
 			System.out.println("[driver] [start] sleep(): " + NewString + " second...");
 			Thread.sleep(Integer.valueOf(NewString) * 1000);// 將字串轉成整數
@@ -526,10 +523,11 @@ public class method {
 	public void Byid_Swipe_Vertical() {
 		Point p;// 元件座標
 		Dimension s;// 元件大小
+		WebElement e;
 		for (int i = 0; i < driver.length; i++) {
-
-			s = driver[i].findElement(By.id(TestCase.DeviceInformation.appPackage + ":id/" + appElemnt)).getSize();
-			p = driver[i].findElement(By.id(TestCase.DeviceInformation.appPackage + ":id/" + appElemnt)).getLocation();
+			e = driver[i].findElement(By.id(TestCase.DeviceInformation.appPackage + ":id/" + appElemnt));
+			s = e.getSize();
+			p = e.getLocation();
 			int errorX = (int) Math.round(s.width * 0.01);
 			int errorY = (int) Math.round(s.height * 0.01);
 			for (int j = 0; j < iterative; j++) {
@@ -539,16 +537,17 @@ public class method {
 					driver[i].swipe(p.x + errorX, p.y + errorY, p.x + errorX, s.height - errorY, 1000);
 				}
 			}
-
 		}
 	}
 
 	public void ByXpath_Swipe_Vertical() {
 		Point p;// 元件座標
 		Dimension s;// 元件大小
+		WebElement e;
 		for (int i = 0; i < driver.length; i++) {
-			s = driver[i].findElement(By.xpath(appElemnt)).getSize();
-			p = driver[i].findElement(By.xpath(appElemnt)).getLocation();
+			e = driver[i].findElement(By.xpath(appElemnt));
+			s = e.getSize();
+			p = e.getLocation();
 			int errorX = (int) Math.round(s.width * 0.01);
 			int errorY = (int) Math.round(s.height * 0.01);
 			for (int j = 0; j < iterative; j++) {
