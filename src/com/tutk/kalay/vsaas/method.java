@@ -643,6 +643,7 @@ public class method {
 					Dimension s;// 元件大小
 					WebElement e;
 					e = driver[j].findElement(By.xpath(appElemnt));// Scroll bar
+																	// 定位應寫在For(j)迴圈外，可節省時間
 					s = e.getSize();
 					p = e.getLocation();
 					int errorX = (int) Math.round(s.width * 0.1);
@@ -673,11 +674,19 @@ public class method {
 		}
 	}
 
-	// ByXpath_Swipe_FindText_Click缺點：搜尋5次都沒找到元件，則跳出for
+	// ByXpath_Swipe_FindText_Click缺點：1.搜尋的字串不可重複 2.搜尋5次都沒找到元件，則跳出for
 	public void ByXpath_Swipe_FinText_Click() {
 
 		for (int j = 0; j < driver.length; j++) {
-			int SearchNumber = 0;
+			int SearchNumber = 0;// 搜尋次數
+			Point p;// 元件座標
+			Dimension s;// 元件大小
+			WebElement e;
+			e = driver[j].findElement(By.xpath(appElemnt));// Scroll bar
+			s = e.getSize();
+			p = e.getLocation();
+			int errorX = (int) Math.round(s.width * 0.1);
+			int errorY = (int) Math.round(s.height * 0.1);
 			List<WebElement> targetlist = driver[j].findElementsByXPath(appElemntarray);// 要搜尋的多筆類似元件清單
 			String lastelement = targetlist.get(targetlist.size() - 1).getText().toString();// 要搜尋的多筆類似元件清單中，最後一筆字串(目的：判斷是否所有資料都搜尋過)
 			wait[j] = new WebDriverWait(driver[j], device_timeout);
@@ -688,8 +697,8 @@ public class method {
 					Point ScrollBarP, targetElementP;// 卷軸元件與準備搜尋的元件之座標
 					Dimension ScrollBarS, targetElementS;// 卷軸元件與準備搜尋的元件之長及寬
 
-					ScrollBar = driver[j].findElement(By.xpath(appElemnt));// Scroll
-																			// bar
+					ScrollBar = e;// driver[j].findElement(By.xpath(appElemnt));
+									// Scroll bar
 					targetElement = driver[j].findElement(By.xpath(appInputXpath));
 
 					ScrollBarP = ScrollBar.getLocation();
@@ -704,9 +713,9 @@ public class method {
 					if (scroll.equals("DOWN")) {
 						if (targetElementS.height < 0 || targetElementP.y > ScrollBarS.height) {
 							driver[j].swipe(targetElementP.x, ScrollBarS.height + ScrollBarP.y - errory,
-									targetElementP.x, ScrollBarP.y, 1000);
+									targetElementP.x, ScrollBarP.y + errory, 1000);
 						} else {
-							driver[j].swipe(targetElementP.x, targetElementP.y, targetElementP.x, ScrollBarP.y, 1000);
+							driver[j].swipe(targetElementP.x, targetElementP.y, targetElementP.x, ScrollBarP.y + errory, 1000);
 						}
 					} else if (scroll.equals("UP")) {
 						if (targetElementP.y < 0 || targetElementP.y < ScrollBarP.y) {
@@ -736,14 +745,6 @@ public class method {
 
 				if (i == targetlist.size() - 1) {// 若targetlist中最後一筆資料比對完後，則進行Srcoll拖曳
 					SearchNumber++;
-					Point p;// 元件座標
-					Dimension s;// 元件大小
-					WebElement e;
-					e = driver[j].findElement(By.xpath(appElemnt));// Scroll bar
-					s = e.getSize();
-					p = e.getLocation();
-					int errorX = (int) Math.round(s.width * 0.1);
-					int errorY = (int) Math.round(s.height * 0.1);
 
 					if (scroll.equals("DOWN")) {
 						driver[j].swipe(p.x + errorX, s.height - errorY, p.x + errorX, p.y + errorY, 1000);// 向下捲動
@@ -767,9 +768,9 @@ public class method {
 					 * targetlist.get(targetlist.size() -
 					 * 1).getText().toString(); }
 					 */
-					if (SearchNumber == 5) {//搜尋5次都沒找到元件，則跳出for
-						System.out.println("找不到" + appInput);//印出找不到
-						break;//跳出for
+					if (SearchNumber == 10) {// 搜尋5次都沒找到元件，則跳出for
+						System.out.println("找不到" + appInput);// 印出找不到
+						break;// 跳出for
 					}
 					i = -1;// 令i=-1(目的：再次執行for)
 				}
