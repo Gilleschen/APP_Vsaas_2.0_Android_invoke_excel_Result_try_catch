@@ -33,15 +33,21 @@ public class LoadTestCase {
 
 						for (int j = 0; j < sheet.getRow(i).getPhysicalNumberOfCells(); j++) {
 
-							if (sheet.getRow(i).getCell(j).toString().equals("CaseName")) {
-								CaseList.add(sheet.getRow(i).getCell(1).toString());// 從指定待測試腳本的sheet中儲存測試案例的名稱
-								break;
-							} else {
+							if (sheet.getRow(i).getCell(j) != null) {// Apache
+																		// POI
+																		// 讀取Excel儲存格時，有機率將空白儲存格讀入，因此需判斷儲存格是否為空白，皆null
 
-								// StepList.add(sheet.getRow(i).getCell(j).toString());//
-								// 從指定待測試腳本的sheet中儲存測試案例的步驟
-								StepList.add(sheet.getRow(i).getCell(j).getStringCellValue());// 從指定待測試腳本的sheet中儲存測試案例的步驟 Excel數字要轉成字串型態
+								if (sheet.getRow(i).getCell(j).toString().equals("CaseName")) {
+									CaseList.add(sheet.getRow(i).getCell(1).toString());// 從指定待測試腳本的sheet中儲存測試案例的名稱
+									break;
+								} else {
+
+									// StepList.add(sheet.getRow(i).getCell(j).toString());//從指定待測試腳本的sheet中儲存測試案例的步驟
+									StepList.add(sheet.getRow(i).getCell(j).getStringCellValue());// 從指定待測試腳本的sheet中儲存測試案例的步驟
+																									// Excel數字要轉成字串型態
+								}
 							}
+
 						}
 
 						i++;
@@ -54,7 +60,7 @@ public class LoadTestCase {
 		} catch (Exception e) {
 			;
 		}
-		
+
 		System.out.println("測試步驟：" + StepList);
 		// 建立各裝置的Test Report
 		for (int i = 0; i < DeviceInformation.deviceName.size(); i++) {

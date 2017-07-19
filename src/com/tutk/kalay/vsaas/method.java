@@ -187,8 +187,8 @@ public class method {
 				i = i + 3;
 				break;
 
-			case "ByXpath_Swipe_FinText_Click":
-				methodName = "ByXpath_Swipe_FinText_Click";
+			case "ByXpath_Swipe_FindText_Click_Android":
+				methodName = "ByXpath_Swipe_FindText_Click_Android";
 				appElemnt = TestCase.StepList.get(i + 1);
 				scroll = TestCase.StepList.get(i + 2);
 				appElemntarray = TestCase.StepList.get(i + 3);
@@ -620,11 +620,12 @@ public class method {
 			}
 		}
 	}
-
-	// ByXpath_Swipe_FindText_Click_2缺點
+	
+	//未加入Invkoe function
+	// ByXpath_Swipe_FindText_Click_Android_2缺點
 	// ：雖然已定位到指定元件，但元件未dispaly出來(被擋住，肉眼看不到)，因此執行Click()後，APP行為可能會出錯；解決方式：使用wait.until(ExpectedConditions.visibilityOfElementLocated())
 	// visibilityOfElementLocated表示直到元件顯示在螢幕上後(肉眼看的到)，再執行下一步動作；缺點，必須等Timeout時間(WebDriverWait的timeout時間+MobileCapabilityType.NEW_COMMAND_TIMEOUT的timeout時間)
-	public void ByXpath_Swipe_FindText_Click_2() {
+	public void ByXpath_Swipe_FindText_Click_Android_2() {
 
 		for (int j = 0; j < driver.length; j++) {
 			List<WebElement> targetlist = driver[j].findElementsByXPath(appElemntarray);// 要搜尋的多筆類似元件清單
@@ -674,8 +675,8 @@ public class method {
 		}
 	}
 
-	// ByXpath_Swipe_FindText_Click缺點：1.搜尋的字串不可重複 2.搜尋5次都沒找到元件，則跳出for
-	public void ByXpath_Swipe_FinText_Click() {
+	// ByXpath_Swipe_FindText_Click_Android缺點：1.搜尋的字串不可重複 2.搜尋5次都沒找到元件，則跳出for
+	public void ByXpath_Swipe_FindText_Click_Android() {
 
 		for (int j = 0; j < driver.length; j++) {
 			int SearchNumber = 0;// 搜尋次數
@@ -738,8 +739,8 @@ public class method {
 						}
 					}
 
-					wait[j].until(ExpectedConditions.visibilityOfElementLocated(By.xpath(appInputXpath)));
-					driver[j].findElement(By.xpath(appInputXpath)).click();
+					wait[j].until(ExpectedConditions.visibilityOfElementLocated(By.xpath(appInputXpath))).click();
+					//driver[j].findElement(By.xpath(appInputXpath)).click();
 					break;
 				}
 
@@ -768,7 +769,7 @@ public class method {
 					 * targetlist.get(targetlist.size() -
 					 * 1).getText().toString(); }
 					 */
-					if (SearchNumber == 10) {// 搜尋5次都沒找到元件，則跳出for
+					if (SearchNumber == 10) {// 搜尋10次都沒找到元件，則跳出for
 						System.out.println("找不到" + appInput);// 印出找不到
 						break;// 跳出for
 					}
