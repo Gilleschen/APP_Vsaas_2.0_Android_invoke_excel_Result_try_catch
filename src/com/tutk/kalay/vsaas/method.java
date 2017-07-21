@@ -56,10 +56,11 @@ public class method {
 	XSSFSheet Sheet;
 
 	public static void main(String[] args) throws NoSuchMethodException, SecurityException, IllegalAccessException,
-			IllegalArgumentException, InvocationTargetException, InstantiationException {
+			IllegalArgumentException, InvocationTargetException, InstantiationException, IOException {
 
 		invokeFunction();
 		System.out.println("測試結束!!!!!!!!");
+		Process proc = Runtime.getRuntime().exec("explorer C:\\TUTK_QA_TestTool\\TestReport");//開啟TestReport資料夾
 
 	}
 
@@ -390,9 +391,9 @@ public class method {
 		}
 
 		try {
-			System.out.println("[driver] [start] sleep(): " + NewString + " second...");
+			System.out.println("[driver] [start] Sleep(): " + NewString + " second...");
 			Thread.sleep(Integer.valueOf(NewString) * 1000);// 將字串轉成整數
-			System.out.println("[driver] [end] sleep");
+			System.out.println("[driver] [end] Sleep");
 		} catch (Exception e) {
 			;
 		}
@@ -460,14 +461,14 @@ public class method {
 				cap[i].setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, TestCase.DeviceInformation.appActivity);
 
 				cap[i].setCapability(SeeTestCapabilityType.REPORT_FORMAT, "xml");
-				cap[i].setCapability(SeeTestCapabilityType.REPORT_DIRECTORY, "C:\\TestReport");// Report路徑
+				cap[i].setCapability(SeeTestCapabilityType.REPORT_DIRECTORY, "C:\\TUTK_QA_TestTool\\TestReport");// Report路徑
 				cap[i].setCapability(SeeTestCapabilityType.TEST_NAME, TestCase.CaseList.get(CurrentCaseNumber));// TestCase名稱
 
 				try {
 					driver[j] = new SeeTestAndroidDriver(new URL("http://localhost:" + port + "/wd/hub"), cap[j]);
 				} catch (Exception e) {
 					System.out.print("[Error] Can't find UDID: " + TestCase.DeviceInformation.deviceName.get(i));
-					System.out.println("or can't find appPackage: " + TestCase.DeviceInformation.appPackage);
+					System.out.println(" or can not find appPackage: " + TestCase.DeviceInformation.appPackage);
 				}
 				break;
 			}
@@ -511,8 +512,8 @@ public class method {
 				p1 = driver[i].findElement(By.xpath(appElemnt)).getLocation();
 				driver[i].swipe(p1.x, p1.y, p1.x, p1.y - (p1.y - p2.y), 1000);
 			} catch (Exception e) {
-				System.out.println("[Error] Can't find " + appElemnt);
-				System.out.println("[Error] or Can't find " + toElemnt);
+				System.out.print("[Error] Can't find " + appElemnt);
+				System.out.println(" or Can't find " + toElemnt);
 			}
 		}
 	}
@@ -528,8 +529,8 @@ public class method {
 						.getLocation();
 				driver[i].swipe(p1.x, p1.y, p1.x, p1.y - (p1.y - p2.y), 1000);
 			} catch (Exception e) {
-				System.out.println("[Error] Can't find " + appElemnt);
-				System.out.println("[Error] or Can't find " + toElemnt);
+				System.out.print("[Error] Can't find " + appElemnt);
+				System.out.println(" or Can't find " + toElemnt);
 			}
 
 		}
@@ -549,18 +550,23 @@ public class method {
 		Dimension s;// 元件大小
 		WebElement e;
 		for (int i = 0; i < driver.length; i++) {
-			e = driver[i].findElement(By.id(TestCase.DeviceInformation.appPackage + ":id/" + appElemnt));
-			s = e.getSize();
-			p = e.getLocation();
-			int errorX = (int) Math.round(s.width * 0.01);
-			int errorY = (int) Math.round(s.height * 0.01);
-			for (int j = 0; j < iterative; j++) {
-				if (scroll.equals("DOWN")) {// 畫面向下捲動
-					driver[i].swipe(p.x + errorX, s.height - errorY, p.x + errorX, p.y + errorY, 1000);
-				} else if (scroll.equals("UP")) {// 畫面向上捲動
-					driver[i].swipe(p.x + errorX, p.y + errorY, p.x + errorX, s.height - errorY, 1000);
+			try {
+				e = driver[i].findElement(By.id(TestCase.DeviceInformation.appPackage + ":id/" + appElemnt));
+				s = e.getSize();
+				p = e.getLocation();
+				int errorX = (int) Math.round(s.width * 0.01);
+				int errorY = (int) Math.round(s.height * 0.01);
+				for (int j = 0; j < iterative; j++) {
+					if (scroll.equals("DOWN")) {// 畫面向下捲動
+						driver[i].swipe(p.x + errorX, p.y + s.height - errorY, p.x + errorX, p.y + errorY, 1000);
+					} else if (scroll.equals("UP")) {// 畫面向上捲動
+						driver[i].swipe(p.x + errorX, p.y + errorY, p.x + errorX, p.y + s.height - errorY, 1000);
+					}
 				}
+			} catch (Exception w) {
+				System.out.println("[Error] Can't find " + TestCase.DeviceInformation.appPackage + ":id/" + appElemnt);
 			}
+
 		}
 	}
 
@@ -568,19 +574,25 @@ public class method {
 		Point p;// 元件座標
 		Dimension s;// 元件大小
 		WebElement e;
+
 		for (int i = 0; i < driver.length; i++) {
-			e = driver[i].findElement(By.xpath(appElemnt));
-			s = e.getSize();
-			p = e.getLocation();
-			int errorX = (int) Math.round(s.width * 0.01);
-			int errorY = (int) Math.round(s.height * 0.01);
-			for (int j = 0; j < iterative; j++) {
-				if (scroll.equals("DOWN")) {// 畫面向下捲動
-					driver[i].swipe(p.x + errorX, s.height - errorY, p.x + errorX, p.y + errorY, 1000);
-				} else if (scroll.equals("UP")) {// 畫面向上捲動
-					driver[i].swipe(p.x + errorX, p.y + errorY, p.x + errorX, s.height - errorY, 1000);
+			try {
+				e = driver[i].findElement(By.xpath(appElemnt));
+				s = e.getSize();
+				p = e.getLocation();
+				int errorX = (int) Math.round(s.width * 0.01);
+				int errorY = (int) Math.round(s.height * 0.01);
+				for (int j = 0; j < iterative; j++) {
+					if (scroll.equals("DOWN")) {// 畫面向下捲動
+						driver[i].swipe(p.x + errorX, p.y + s.height - errorY, p.x + errorX, p.y + errorY, 1000);
+					} else if (scroll.equals("UP")) {// 畫面向上捲動
+						driver[i].swipe(p.x + errorX, p.y + errorY, p.x + errorX, p.y + s.height - errorY, 1000);
+					}
 				}
+			} catch (Exception w) {
+				System.out.println("[Error] Can't find " + appElemnt);
 			}
+
 		}
 	}
 
@@ -589,192 +601,231 @@ public class method {
 		Point p;// 元件座標
 		Dimension s;// 元件大小
 		for (int i = 0; i < driver.length; i++) {
-			s = driver[i].findElement(By.id(TestCase.DeviceInformation.appPackage + ":id/" + appElemnt)).getSize();
-			p = driver[i].findElement(By.id(TestCase.DeviceInformation.appPackage + ":id/" + appElemnt)).getLocation();
-			int errorX = (int) Math.round(s.getWidth() * 0.01);
-			int errorY = (int) Math.round(s.getHeight() * 0.01);
-			for (int j = 0; j < iterative; j++) {
-				if (scroll.equals("RIGHT")) {// 畫面向右捲動 (觀看畫面左方內容)
-					driver[i].swipe(p.x + errorX, p.y + errorY, s.width - errorX, p.y + errorY, 1000);
-				} else if (scroll.equals("LEFT")) {// 畫面向左捲動 (觀看畫面右方內容)
-					driver[i].swipe(s.width - errorX, p.y + errorY, p.x + errorX, p.y + errorY, 1000);
+			try {
+				s = driver[i].findElement(By.id(TestCase.DeviceInformation.appPackage + ":id/" + appElemnt)).getSize();
+				p = driver[i].findElement(By.id(TestCase.DeviceInformation.appPackage + ":id/" + appElemnt))
+						.getLocation();
+				int errorX = (int) Math.round(s.getWidth() * 0.01);
+				int errorY = (int) Math.round(s.getHeight() * 0.01);
+				for (int j = 0; j < iterative; j++) {
+					if (scroll.equals("RIGHT")) {// 畫面向右捲動 (觀看畫面左方內容)
+						driver[i].swipe(p.x + errorX, p.y + errorY, p.x + s.width - errorX, p.y + errorY, 1000);
+					} else if (scroll.equals("LEFT")) {// 畫面向左捲動 (觀看畫面右方內容)
+						driver[i].swipe(p.x + s.width - errorX, p.y + errorY, p.x + errorX, p.y + errorY, 1000);
+					}
 				}
+			} catch (Exception w) {
+				System.out.print("[Error] Can't find " + appElemnt);
 			}
+
 		}
 	}
 
 	public void ByXpath_Swipe_Horizontal() {
 		Point p;// 元件座標
 		Dimension s;// 元件大小
+		WebElement e;
 		for (int i = 0; i < driver.length; i++) {
-			s = driver[i].findElement(By.xpath(appElemnt)).getSize();
-			p = driver[i].findElement(By.xpath(appElemnt)).getLocation();
-			int errorX = (int) Math.round(s.getWidth() * 0.01);
-			int errorY = (int) Math.round(s.getHeight() * 0.01);
-			for (int j = 0; j < iterative; j++) {
-				if (scroll.equals("RIGHT")) {// 畫面向右捲動 (觀看畫面左方內容)
-					driver[i].swipe(p.x + errorX, p.y + errorY, s.width - errorX, p.y + errorY, 1000);
-				} else if (scroll.equals("LEFT")) {// 畫面向左捲動 (觀看畫面右方內容)
-					driver[i].swipe(s.width - errorX, p.y + errorY, p.x + errorX, p.y + errorY, 1000);
+			try {
+				e = driver[i].findElement(By.xpath(appElemnt));
+				s = e.getSize();
+				p = e.getLocation();
+				int errorX = (int) Math.round(s.getWidth() * 0.01);
+				int errorY = (int) Math.round(s.getHeight() * 0.01);
+				for (int j = 0; j < iterative; j++) {
+					if (scroll.equals("RIGHT")) {// 畫面向右捲動 (觀看畫面左方內容)
+						driver[i].swipe(p.x + errorX, p.y + errorY, p.x + s.width - errorX, p.y + errorY, 1000);
+					} else if (scroll.equals("LEFT")) {// 畫面向左捲動 (觀看畫面右方內容)
+						driver[i].swipe(p.x + s.width - errorX, p.y + errorY, p.x + errorX, p.y + errorY, 1000);
+					}
 				}
+			} catch (Exception w) {
+				System.out.println("[Error] Can't find " + appElemnt);
 			}
+
 		}
 	}
-	
-	//未加入Invkoe function
+
+	// 未加入Invkoe function
 	// ByXpath_Swipe_FindText_Click_Android_2缺點
 	// ：雖然已定位到指定元件，但元件未dispaly出來(被擋住，肉眼看不到)，因此執行Click()後，APP行為可能會出錯；解決方式：使用wait.until(ExpectedConditions.visibilityOfElementLocated())
 	// visibilityOfElementLocated表示直到元件顯示在螢幕上後(肉眼看的到)，再執行下一步動作；缺點，必須等Timeout時間(WebDriverWait的timeout時間+MobileCapabilityType.NEW_COMMAND_TIMEOUT的timeout時間)
 	public void ByXpath_Swipe_FindText_Click_Android_2() {
 
 		for (int j = 0; j < driver.length; j++) {
-			List<WebElement> targetlist = driver[j].findElementsByXPath(appElemntarray);// 要搜尋的多筆類似元件清單
-			String lastelement = targetlist.get(targetlist.size() - 1).getText().toString();// 要搜尋的多筆類似元件清單中，最後一筆字串(目的：判斷是否所有資料都搜尋過)
-			for (int i = 0; i < targetlist.size(); i++) {
+			try {
+				List<WebElement> targetlist = driver[j].findElementsByXPath(appElemntarray);// 要搜尋的多筆類似元件清單
+				String lastelement = targetlist.get(targetlist.size() - 1).getText().toString();// 要搜尋的多筆類似元件清單中，最後一筆字串(目的：判斷是否所有資料都搜尋過)
+				for (int i = 0; i < targetlist.size(); i++) {
 
-				if ((targetlist.get(i).getText().toString()).equals(appInput)) {// 若targetelement在targetlist清單中，則點擊targetelement
-					WebElement target = targetlist.get(i);
-					target.click();
-					break;
-				}
-
-				if (i == targetlist.size() - 1) {// 若targetlist中最後一筆資料比對完後，則進行Srcoll拖曳
-
-					Point p;// 元件座標
-					Dimension s;// 元件大小
-					WebElement e;
-					e = driver[j].findElement(By.xpath(appElemnt));// Scroll bar
-																	// 定位應寫在For(j)迴圈外，可節省時間
-					s = e.getSize();
-					p = e.getLocation();
-					int errorX = (int) Math.round(s.width * 0.1);
-					int errorY = (int) Math.round(s.height * 0.1);
-
-					if (scroll.equals("DOWN")) {
-						driver[j].swipe(p.x + errorX, s.height - errorY, p.x + errorX, p.y + errorY, 1000);// 向下捲動
-					} else if (scroll.equals("UP")) {
-						driver[j].swipe(p.x + errorX, p.y + errorY, p.x + errorX, s.height - errorY, 1000);// 向上捲動
-					} else if (scroll.equals("LEFT")) {
-						driver[j].swipe(s.width - errorX, p.y + errorY, p.x + errorX, p.y + errorY, 1000);// 畫面向左捲動(觀看畫面右方內容)
-					} else if (scroll.equals("RIGHT")) {
-						driver[j].swipe(p.x + errorX, p.y + errorY, s.width - errorX, p.y + errorY, 1000);// 畫面向右捲動(觀看畫面左方內容)
-					}
-
-					targetlist.clear();// 清除targetlist
-					targetlist = driver[j].findElementsByXPath(appElemntarray);// 再次取得新targetlist
-
-					if (lastelement.equals(targetlist.get(targetlist.size() - 1).getText().toString())) {// 判斷新targetlist最後一筆資料是否與lastelement相同
-						System.out.println("找不到" + appInput);// 若相同，表示Srcoll已拖曳至最後，則印出找不到，跳出for
+					if ((targetlist.get(i).getText().toString()).equals(appInput)) {// 若targetelement在targetlist清單中，則點擊targetelement
+						WebElement target = targetlist.get(i);
+						target.click();
 						break;
-					} else {// 若不相同，則更新lastelement最後筆資料
-						lastelement = targetlist.get(targetlist.size() - 1).getText().toString();
 					}
-					i = -1;// 令i=-1(目的：再次執行for)
+
+					if (i == targetlist.size() - 1) {// 若targetlist中最後一筆資料比對完後，則進行Srcoll拖曳
+
+						Point p;// 元件座標
+						Dimension s;// 元件大小
+						WebElement e;
+						e = driver[j].findElement(By.xpath(appElemnt));// Scroll
+																		// bar
+																		// 定位應寫在For(j)迴圈外，可節省時間
+						s = e.getSize();
+						p = e.getLocation();
+						int errorX = (int) Math.round(s.width * 0.1);
+						int errorY = (int) Math.round(s.height * 0.1);
+
+						if (scroll.equals("DOWN")) {
+							driver[j].swipe(p.x + errorX, s.height - errorY, p.x + errorX, p.y + errorY, 1000);// 向下捲動
+						} else if (scroll.equals("UP")) {
+							driver[j].swipe(p.x + errorX, p.y + errorY, p.x + errorX, s.height - errorY, 1000);// 向上捲動
+						} else if (scroll.equals("LEFT")) {
+							driver[j].swipe(s.width - errorX, p.y + errorY, p.x + errorX, p.y + errorY, 1000);// 畫面向左捲動(觀看畫面右方內容)
+						} else if (scroll.equals("RIGHT")) {
+							driver[j].swipe(p.x + errorX, p.y + errorY, s.width - errorX, p.y + errorY, 1000);// 畫面向右捲動(觀看畫面左方內容)
+						}
+
+						targetlist.clear();// 清除targetlist
+						targetlist = driver[j].findElementsByXPath(appElemntarray);// 再次取得新targetlist
+
+						if (lastelement.equals(targetlist.get(targetlist.size() - 1).getText().toString())) {// 判斷新targetlist最後一筆資料是否與lastelement相同
+							System.out.println("找不到" + appInput);// 若相同，表示Srcoll已拖曳至最後，則印出找不到，跳出for
+							break;
+						} else {// 若不相同，則更新lastelement最後筆資料
+							lastelement = targetlist.get(targetlist.size() - 1).getText().toString();
+						}
+						i = -1;// 令i=-1(目的：再次執行for)
+					}
 				}
+
+			} catch (Exception w) {
+				System.out.print("[Error] Can't find " + appElemntarray);
 			}
 		}
 	}
 
-	// ByXpath_Swipe_FindText_Click_Android缺點：1.搜尋的字串不可重複 2.搜尋5次都沒找到元件，則跳出for
+	// ByXpath_Swipe_FindText_Click_Android缺點：1.搜尋的字串不可重複 2.搜尋5次都沒找到元件，則停止搜尋
 	public void ByXpath_Swipe_FindText_Click_Android() {
 
 		for (int j = 0; j < driver.length; j++) {
 			int SearchNumber = 0;// 搜尋次數
-			Point p;// 元件座標
-			Dimension s;// 元件大小
-			WebElement e;
-			e = driver[j].findElement(By.xpath(appElemnt));// Scroll bar
-			s = e.getSize();
-			p = e.getLocation();
-			int errorX = (int) Math.round(s.width * 0.1);
-			int errorY = (int) Math.round(s.height * 0.1);
-			List<WebElement> targetlist = driver[j].findElementsByXPath(appElemntarray);// 要搜尋的多筆類似元件清單
-			String lastelement = targetlist.get(targetlist.size() - 1).getText().toString();// 要搜尋的多筆類似元件清單中，最後一筆字串(目的：判斷是否所有資料都搜尋過)
-			wait[j] = new WebDriverWait(driver[j], device_timeout);
-			for (int i = 0; i < targetlist.size(); i++) {
+			Point ScrollBarP;// 卷軸元件座標
+			Dimension ScrollBarS;// 卷軸元件之長及寬
+			WebElement ScrollBar;// 卷軸元件
 
-				if ((targetlist.get(i).getText().toString()).equals(appInput)) {// 若targetelement在targetlist清單中，則點擊targetelement
-					WebElement ScrollBar, targetElement;// 卷軸元件與準備搜尋的元件
-					Point ScrollBarP, targetElementP;// 卷軸元件與準備搜尋的元件之座標
-					Dimension ScrollBarS, targetElementS;// 卷軸元件與準備搜尋的元件之長及寬
+			try {
+				ScrollBar = driver[j].findElement(By.xpath(appElemnt));// 卷軸元件
+				ScrollBarS = ScrollBar.getSize();// 卷軸元件的長及寬
+				ScrollBarP = ScrollBar.getLocation();// 卷軸的座標
+				int errorX = (int) Math.round(ScrollBarS.width * 0.1);
+				int errorY = (int) Math.round(ScrollBarS.height * 0.1);
+				List<WebElement> targetlist = driver[j].findElementsByXPath(appElemntarray);// 要搜尋的多筆類似元件清單
 
-					ScrollBar = e;// driver[j].findElement(By.xpath(appElemnt));
-									// Scroll bar
-					targetElement = driver[j].findElement(By.xpath(appInputXpath));
+				wait[j] = new WebDriverWait(driver[j], device_timeout);
 
-					ScrollBarP = ScrollBar.getLocation();
-					targetElementP = targetElement.getLocation();
+				for (int i = 0; i < targetlist.size(); i++) {
 
-					ScrollBarS = ScrollBar.getSize();
-					targetElementS = targetElement.getSize();
+					if ((targetlist.get(i).getText().toString()).equals(appInput)) {// 若targetelement在targetlist清單中，則點擊targetelement
+						WebElement targetElement;// 準備搜尋的元件
+						Point targetElementP;// 準備搜尋的元件之座標
+						Dimension targetElementS;// 準備搜尋的元件之長及寬
 
-					int errory = (int) Math.round(ScrollBarS.height * 0.1);
-					int errorx = (int) Math.round(ScrollBarS.width * 0.1);
+						targetElement = driver[j].findElement(By.xpath(appInputXpath));
+						targetElementP = targetElement.getLocation();// 準備搜尋元件的座標
+						targetElementS = targetElement.getSize();// 準備搜尋元件的長及寬
 
-					if (scroll.equals("DOWN")) {
-						if (targetElementS.height < 0 || targetElementP.y > ScrollBarS.height) {
-							driver[j].swipe(targetElementP.x, ScrollBarS.height + ScrollBarP.y - errory,
-									targetElementP.x, ScrollBarP.y + errory, 1000);
-						} else {
-							driver[j].swipe(targetElementP.x, targetElementP.y, targetElementP.x, ScrollBarP.y + errory, 1000);
+						switch (scroll.toString()) {
+
+						case "DOWN":
+							if (targetElementP.y > ScrollBarP.y + ScrollBarS.height) {// 若搜尋元件的y座標大於卷軸範圍，表示搜尋元件全部UI被卷軸遮住
+								driver[j].swipe(targetElementP.x, ScrollBarS.height + ScrollBarP.y - errorY,
+										targetElementP.x, ScrollBarP.y + errorY, 1000);
+							} else if (targetElementP.y + targetElementS.height == ScrollBarP.y + ScrollBarS.height) {// 若搜尋元件的y座標與寬度總和等於卷軸長度，表示搜尋元件的部分UI被卷軸遮住
+								driver[j].swipe(targetElementP.x - errorY, targetElementP.y, targetElementP.x,
+										ScrollBarP.y + errorY, 1000);
+							}
+							break;
+
+						case "UP":
+							if (targetElementP.y + targetElementS.height < ScrollBarP.y) {// 若搜尋元件的最大y座標小於卷軸y座標，表示搜尋元件全部UI被卷軸遮住
+								driver[j].swipe(targetElementP.x, ScrollBarP.y + errorY, targetElementP.x,
+										ScrollBarS.height + ScrollBarP.y - errorY, 1000);
+							} else {// 反之，若搜尋元件的最大y座標大於卷軸y座標，表示搜尋元件全部UI被卷軸遮住
+								driver[j].swipe(targetElementP.x, ScrollBarP.y + errorY, targetElementP.x,
+										ScrollBarP.y + ScrollBarS.height - errorY, 1000);
+							}
+							break;
+
+						case "LEFT":// 畫面向左捲動(觀看畫面右方內容)
+							if (targetElementP.x > ScrollBarP.x + ScrollBarS.width) {// 若搜尋元件的x座標大於卷軸範圍，表示搜尋元件全部UI被卷軸遮住
+								driver[j].swipe(ScrollBarP.x + ScrollBarS.width - errorX, targetElementP.y,
+										ScrollBarP.x + errorX, targetElementP.y, 1000);
+							} else if (targetElementP.x + targetElementS.width == ScrollBarP.x + ScrollBarS.width) {// 若搜尋元件的x座標與寬度總和等於卷軸寬度，表示搜尋元件的部分UI被卷軸遮住
+								driver[j].swipe(targetElementP.x - errorX, targetElementP.y, ScrollBarP.x + errorX,
+										targetElementP.y, 1000);
+							}
+							break;
+
+						case "RIGHT":// 畫面向右捲動(觀看畫面左方內容)
+							if (targetElementP.x + targetElementS.width < ScrollBarP.x) {// 若搜尋元件的最大x座標小於卷軸x座標，表示搜尋元件全部UI被卷軸遮住
+								driver[j].swipe(ScrollBarP.x + errorX, targetElementP.y,
+										ScrollBarP.x + ScrollBarS.width - errorX, targetElementP.y, 1000);
+							} else if (targetElementP.x == ScrollBarP.x) {// 若搜尋元件的x座標等於卷軸x座標，可能表示搜尋元件的部分UI被卷軸遮住
+								driver[j].swipe(targetElementP.x + targetElementS.width + errorX, targetElementP.y,
+										ScrollBarP.x + ScrollBarS.width - errorX, targetElementP.y, 1000);
+							}
+							break;
 						}
-					} else if (scroll.equals("UP")) {
-						if (targetElementP.y < 0 || targetElementP.y < ScrollBarP.y) {
-							driver[j].swipe(targetElementP.x, ScrollBarP.y, targetElementP.x,
-									ScrollBarS.height + ScrollBarP.y - errory, 1000);
-						} else {
-							driver[j].swipe(targetElementP.x, ScrollBarP.y, targetElementP.x,
-									ScrollBarP.y + ScrollBarS.height - errory, 1000);
-						}
-					} else if (scroll.equals("LEFT")) {
-						if (targetElementP.x > ScrollBarS.width) {
-							driver[j].swipe(ScrollBarS.width - errorx, targetElementP.y, ScrollBarP.x + errorx,
-									targetElementP.y, 1000);
-						}
-					} else if (scroll.equals("RIGHT")) {
 
-						if (targetElementP.x < 0) {
-							driver[j].swipe(ScrollBarP.x + errorx, targetElementP.y, ScrollBarS.width - errorx,
-									targetElementP.y, 1000);
-						}
+						wait[j].until(ExpectedConditions.visibilityOfElementLocated(By.xpath(appInputXpath))).click();
+						// driver[j].findElement(By.xpath(appInputXpath)).click();
+						break;
 					}
 
-					wait[j].until(ExpectedConditions.visibilityOfElementLocated(By.xpath(appInputXpath))).click();
-					//driver[j].findElement(By.xpath(appInputXpath)).click();
-					break;
+					if (i == targetlist.size() - 1) {// 若targetlist中最後一筆資料比對完後，則進行Srcoll拖曳
+
+						switch (scroll.toString()) {
+
+						case "DOWN":
+							driver[j].swipe(ScrollBarP.x + errorX, ScrollBarP.y + ScrollBarS.height - errorY,
+									ScrollBarP.x + errorX, ScrollBarP.y + errorY, 1000);// 向下捲動
+							break;
+
+						case "UP":
+							driver[j].swipe(ScrollBarP.x + errorX, ScrollBarP.y + errorY, ScrollBarP.x + errorX,
+									ScrollBarP.y + ScrollBarS.height - errorY, 1000);// 向上捲動
+							break;
+
+						case "LEFT":
+							driver[j].swipe(ScrollBarP.x + ScrollBarS.width - errorX, ScrollBarP.y + errorY,
+									ScrollBarP.x + errorX, ScrollBarP.y + errorY, 1000);// 畫面向左捲動(觀看畫面右方內容)
+							break;
+
+						case "RIGHT":
+							driver[j].swipe(ScrollBarP.x + errorX, ScrollBarP.y + errorY,
+									ScrollBarP.x + ScrollBarS.width - errorX, ScrollBarP.y + errorY, 1000);// 畫面向右捲動(觀看畫面左方內容)
+							break;
+
+						}
+						SearchNumber++;// 累計搜尋次數
+						targetlist.clear();// 清除targetlist
+						targetlist = driver[j].findElementsByXPath(appElemntarray);// 再次取得新targetlist
+
+						if (SearchNumber == 10) {// 搜尋10次都沒找到元件，則跳出for
+							System.out.println("Can't find " + appInput);// 印出找不到
+							break;// 跳出for
+						} else {
+							i = -1;// 若SearchNumber!=10，則令i=-1(目的：再次執行for)
+						}
+					}
 				}
 
-				if (i == targetlist.size() - 1) {// 若targetlist中最後一筆資料比對完後，則進行Srcoll拖曳
-					SearchNumber++;
-
-					if (scroll.equals("DOWN")) {
-						driver[j].swipe(p.x + errorX, s.height - errorY, p.x + errorX, p.y + errorY, 1000);// 向下捲動
-					} else if (scroll.equals("UP")) {
-						driver[j].swipe(p.x + errorX, p.y + errorY, p.x + errorX, s.height - errorY, 1000);// 向上捲動
-					} else if (scroll.equals("LEFT")) {
-						driver[j].swipe(s.width - errorX, p.y + errorY, p.x + errorX, p.y + errorY, 1000);// 畫面向左捲動(觀看畫面右方內容)
-					} else if (scroll.equals("RIGHT")) {
-						driver[j].swipe(p.x + errorX, p.y + errorY, s.width - errorX, p.y + errorY, 1000);// 畫面向右捲動(觀看畫面左方內容)
-					}
-
-					targetlist.clear();// 清除targetlist
-					targetlist = driver[j].findElementsByXPath(appElemntarray);// 再次取得新targetlist
-					/*
-					 * if (lastelement.equals(targetlist.get(targetlist.size() -
-					 * 1).getText().toString())) {//
-					 * 判斷新targetlist最後一筆資料是否與lastelement相同
-					 * System.out.println("找不到" + appInput);//
-					 * 若相同，表示Srcoll已拖曳至最後，則印出找不到，跳出for break; } else {//
-					 * 若不相同，則更新lastelement最後筆資料 lastelement =
-					 * targetlist.get(targetlist.size() -
-					 * 1).getText().toString(); }
-					 */
-					if (SearchNumber == 10) {// 搜尋10次都沒找到元件，則跳出for
-						System.out.println("找不到" + appInput);// 印出找不到
-						break;// 跳出for
-					}
-					i = -1;// 令i=-1(目的：再次執行for)
-				}
+			} catch (Exception w) {
+				System.out.print("[Error] Can't find " + appElemnt);
+				System.out.print(" or [Error] can not find " + appElemntarray);
+				System.out.println(" or [Error] can not find " + appInputXpath);
 			}
 		}
 
@@ -791,9 +842,9 @@ public class method {
 	public void SubMethod_Result(boolean ErrorResult[], boolean result[]) {
 		// 開啟Excel
 		try {
-			workBook = new XSSFWorkbook(new FileInputStream("C:\\TestReport\\TestReport.xlsm"));
+			workBook = new XSSFWorkbook(new FileInputStream("C:\\TUTK_QA_TestTool\\TestReport\\TestReport.xlsm"));
 		} catch (Exception e) {
-			System.out.println("[Error] Can't find C:\\TestReport\\TestReport.xlsm");
+			System.out.println("[Error] Can't find C:\\TUTK_QA_TestTool\\TestReport\\TestReport.xlsm");
 		}
 		for (int i = 0; i < driver.length; i++) {
 
@@ -817,12 +868,12 @@ public class method {
 		}
 		// 執行寫入Excel後的存檔動作
 		try {
-			FileOutputStream out = new FileOutputStream(new File("C:\\TestReport\\TestReport.xlsm"));
+			FileOutputStream out = new FileOutputStream(new File("C:\\TUTK_QA_TestTool\\TestReport\\TestReport.xlsm"));
 			workBook.write(out);
 			out.close();
 			workBook.close();
 		} catch (Exception e) {
-			System.out.println("[Error] Can't find C:\\TestReport\\TestReport.xlsm");
+			System.out.println("[Error] Can't find C:\\TUTK_QA_TestTool\\TestReport\\TestReport.xlsm");
 		}
 	}
 }
