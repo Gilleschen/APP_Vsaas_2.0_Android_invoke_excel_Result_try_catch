@@ -16,7 +16,7 @@
 
 範例如下圖：
 
-![image](https://github.com/Gilleschen/Android_invoke_excel/blob/master/picture/app_device_example.PNG)
+![image](https://github.com/Gilleschen/Android_invoke_excel/blob/master/picture/app_device_info_example.PNG)
 
 3. 建立腳本(建立案列Case)：新增一工作表，工作表名稱須以_TestCase為結尾 (e.g. Login_TestCase)，目前支援指令如下: (大小寫有分，使用方式請參考TestScript.xlsm內說明工作表)
 
