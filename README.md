@@ -12,7 +12,7 @@
 
 1. 於C:\建立TUTK_QA_TestTool資料夾 (C:\TUTK_QA_TestTool)
 
-2. TUTK_QA_TestTool中分別建立TestTool資料夾與TestReport資料夾，
+2. TUTK_QA_TestTool中分別建立TestTool資料夾與TestReport資料夾
 
 3. 將TestScript.xlsm放至TestTool資料夾 (C:\TUTK_QA_TestTool\TestTool\TestScript.xlsm)(檔名及副檔名請勿更改)
 
