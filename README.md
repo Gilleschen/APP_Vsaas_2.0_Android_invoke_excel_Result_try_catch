@@ -6,19 +6,25 @@
 
 2. 新增測試手機至Appium studio並啟動手機 (請參考<a href="https://docs.experitest.com/display/public/AS/Android+-+Build+your+first+test">Getting started</a>)
 
-3. 下載<a href="https://github.com/Gilleschen/Android_invoke_excel/raw/master/APP_Android.jar">APP_Android.jar</a>
+3. 下載<a href="https://github.com/Gilleschen/Android_invoke_excel/raw/master/APP_Android.jar">APP_Android.jar</a>及<a href="https://github.com/Gilleschen/Android_invoke_excel/blob/master/TestScript.xlsm">TestScript.xlsm</a>
 
 #### 測試腳本建立說明：
 
-1. 開啟TestScript.xlsm
+1. 於C:\建立TUTK_QA_TestTool資料夾 (C:\TUTK_QA_TestTool)
 
-2. APP&Device工作表輸入APP Packageanme、APP Avtivity、測試手機UDID、測試手機OS版本、待測試腳本與APP_Android.jar路徑 (以_TestCase結尾的工作表)
+2. TUTK_QA_TestTool中分別建立TestTool資料夾與TestReport資料夾，
+
+3. 將TestScript.xlsm放至TestTool資料夾 (C:\TUTK_QA_TestTool\TestTool\TestScript.xlsm)(檔名及副檔名請勿更改)
+
+4. 開啟TestScript.xlsm (已建立APP&Device、ExpectResult及說明工作表)
+
+5. APP&Device工作表輸入APP Packageanme、APP Avtivity、測試手機UDID、測試手機OS版本、待測試腳本(以_TestCase結尾的工作表)及APP_Android.jar路徑 
 
 範例如下圖：
 
 ![image](https://github.com/Gilleschen/Android_invoke_excel/blob/master/picture/app_device_info_example.PNG)
 
-3. 建立腳本(建立案列Case)：新增一工作表，工作表名稱須以_TestCase為結尾 (e.g. Login_TestCase)，目前支援指令如下: (大小寫有分，使用方式請參考TestScript.xlsm內說明工作表)
+6. 建立腳本(建立案列Case)：新增一工作表，工作表名稱須以_TestCase為結尾 (e.g. Login_TestCase)，目前支援指令如下: (大小寫有分，使用方式請參考TestScript.xlsm內說明工作表)
 
         CaseName=>測試案列名稱(各案列開始時第一個填寫項目，必填!!!)
         
@@ -72,29 +78,35 @@
 
 ![image](https://github.com/Gilleschen/APP_Vsaas_2.0_Android_invoke_excel_Result_try_catch/blob/master/picture/Testcase_example.PNG)
   
-4. 建立以ExpectResult為名稱工作表(大小寫有分)，輸入各測試案例的期望結果
+7. ExpectResult工作表輸入各測試案例的期望結果
 
-        3.1 A欄第二列處往下填入案列名稱 (CaseName)
+        7.1 A欄第二列處往下填入案列名稱 (CaseName)
         
-        3.2 與案列名稱同列處輸入期望結果
+        7.2 與案列名稱同列處輸入期望結果
         
  ExpectResult範例如下圖：
  
  ![image](https://github.com/Gilleschen/APP_Vsaas_2.0_Android_invoke_excel_Result_try_catch/blob/master/picture/Result_example.PNG)
 
-5. 於C:\建立TUTK_QA_TestTool資料夾 (C:\TUTK_QA_TestTool)
+#### 測試腳本語法檢查：
 
-6. 於TUTK_QA_TestTool中建立TestTool資料夾與TestReport資料夾，
+1. 執行TestScript.xlsm上方增益集工具進行語法與資訊檢查，如下圖：
 
-7. 將TestScript.xlsm複製至TestTool資料夾 (C:\TUTK_QA_TestTool\TestTool\TestScript.xlsm)(檔名及副檔名請勿更改)
+![image](https://github.com/Gilleschen/Android_invoke_excel/blob/master/picture/Gain_set.PNG)
 
-#### 開始測試
+2. 各功能說明：
 
-方法一：執行method Class中main方法
-
-方法二：$ java -jar APP_Android.jar
-
-方法三：執行Excel增益集中之執行腳本按鈕
+        2.1 檢查資訊：確認APP&Device工作表所有欄位是否正確
+        
+        2.2 檢查案例語法：確認各案例結束後均執行QuitAPP方法，可不強制要求
+        
+        2.3 檢查案例輸入值：確認所有命令及參數是否正確
+        
+        2.4 檢查期望結果：確認案例之期望字串是否列於ExpectResult工作表，當然非所有案列都需列ExpectResult
+        
+        2.5 執行腳本：開始執行指定的工作表腳本，建議執行腳本前請確認前4項功能無誤
+        
+        註：2.2、2.3及2.4功能僅檢查以_TestCase為結尾且未隱藏的工作表 
 
 #### Excel 測試報告
 
