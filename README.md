@@ -6,16 +6,17 @@
 
 2. 新增測試手機至Appium studio並啟動手機 (請參考<a href="https://docs.experitest.com/display/public/AS/Android+-+Build+your+first+test">Getting started</a>)
 
+3. 下載<a href="https://github.com/Gilleschen/Android_invoke_excel/blob/master/APP_Android.jar">APP_Android.jar</a>
 
 #### 測試腳本建立說明：
 
 1. 開啟TestScript.xlsm
 
-2. APP&Device工作表輸入APP Packageanme、APP Avtivity、測試手機UDID、測試手機OS版本與待測試腳本 (以_TestCase結尾的工作表)
+2. APP&Device工作表輸入APP Packageanme、APP Avtivity、測試手機UDID、測試手機OS版本、待測試腳本與APP_Android.jar路徑 (以_TestCase結尾的工作表)
 
 範例如下圖：
 
-![image](https://github.com/Gilleschen/APP_Vsaas_2.0_Android_invoke_excel_Result_try_catch/blob/master/picture/app_device_example.PNG)
+![image](https://github.com/Gilleschen/Android_invoke_excel/blob/master/picture/app_device_example.PNG)
 
 3. 建立腳本(建立案列Case)：新增一工作表，工作表名稱須以_TestCase為結尾 (e.g. Login_TestCase)，目前支援指令如下: (大小寫有分，使用方式請參考TestScript.xlsm內說明工作表)
 
