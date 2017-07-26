@@ -83,9 +83,9 @@
 
 5. 於C:\建立TUTK_QA_TestTool資料夾 (C:\TUTK_QA_TestTool)
 
-6. 於TUTK_QA_TestTool建立TestTool資料夾，將TestScript.xlsm複製至C:\TUTK_QA_TestTool\TestTool (C:\TUTK_QA_TestTool\TestTool\TestScript.xlsm)(檔名及副檔名請勿更改)
+6. 於TUTK_QA_TestTool中建立TestTool資料夾與TestReport資料夾，
 
-7. 於TUTK_QA_TestTool建立TestReport資料夾 (C:\TUTK_QA_TestTool\TestReport)
+7. 將TestScript.xlsm複製至TestTool資料夾 (C:\TUTK_QA_TestTool\TestTool\TestScript.xlsm)(檔名及副檔名請勿更改)
 
 #### 開始測試
 
@@ -93,9 +93,11 @@
 
 方法二：$ java -jar APP_Android.jar
 
+方法三：執行Excel增益集中之執行腳本按鈕
+
 #### Excel 測試報告
 
-1. 開啟C:\TestReport\TestReport.xlsm
+1. 開啟C:\TUTK_QA_TestTool\TestReport\TestReport.xlsm
 
 2. 根據手機UDID自動建立TestReport工作表，如下圖： (e.g. abc123ABC123_TestReport)
 
@@ -107,6 +109,6 @@
 
 #### experitest 測試報告
 
-開啟C:\TestReport\index.html，範例如下圖：
+開啟C:\TUTK_QA_TestTool\TestReport\index.html，範例如下圖：
 
 ![image](https://github.com/Gilleschen/APP_Vsaas_2.0_Android_invoke_excel_Result_try_catch/blob/master/picture/experitest_report.png)
