@@ -16,7 +16,7 @@
 
 3. 將TestScript.xlsm放至TestTool資料夾 (C:\TUTK_QA_TestTool\TestTool\TestScript.xlsm)(檔名及副檔名請勿更改)
 
-4. 開啟TestScript.xlsm (已建立APP&Device、ExpectResult及說明工作表)
+4. 開啟TestScript.xlsm並允許啟動巨集 (已建立APP&Device、ExpectResult及說明工作表)
 
 5. APP&Device工作表輸入APP Packageanme、APP Avtivity、測試手機UDID、測試手機OS版本、待測試腳本(以_TestCase結尾的工作表)及APP_Android.jar路徑，範例如下圖：
 
