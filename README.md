@@ -18,9 +18,9 @@
 
 4. 開啟TestScript.xlsm (已建立APP&Device、ExpectResult及說明工作表)
 
-5. APP&Device工作表輸入APP Packageanme、APP Avtivity、測試手機UDID、測試手機OS版本、待測試腳本(以_TestCase結尾的工作表)及APP_Android.jar路徑 
+5. APP&Device工作表說明：
 
-範例如下圖：
+        輸入APP Packageanme、APP Avtivity、測試手機UDID、測試手機OS版本、待測試腳本(以_TestCase結尾的工作表)及APP_Android.jar路徑，範例如下圖：
 
 ![image](https://github.com/Gilleschen/Android_invoke_excel/blob/master/picture/app_device_info_example.PNG)
 
