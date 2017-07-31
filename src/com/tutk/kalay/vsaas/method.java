@@ -273,6 +273,7 @@ public class method {
 
 			try {
 				element[i] = driver[i].findElement(By.xpath(appElemnt)).getAttribute("content-desc");
+				
 			} catch (Exception e) {
 				System.out.println("[Error] Can't find " + appElemnt);
 				element[i] = "ERROR";// 找不到該物件，回傳Error
@@ -329,7 +330,8 @@ public class method {
 	public void Byid_SendKey() {
 		for (int i = 0; i < driver.length; i++) {
 			try {
-				driver[i].findElement(By.id(TestCase.DeviceInformation.appPackage + ":id/" + appElemnt));
+				
+				driver[i].findElement(By.id(TestCase.DeviceInformation.appPackage + ":id/" + appElemnt)).sendKeys(appInput);
 
 			} catch (Exception e) {
 				System.out.println("[Error] Can't find " + appElemnt);
@@ -350,6 +352,7 @@ public class method {
 	public void ByXpath_SendKey() {
 		for (int i = 0; i < driver.length; i++) {
 			try {
+				
 				driver[i].findElement(By.xpath(appElemnt)).sendKeys(appInput);
 			} catch (Exception e) {
 				System.out.println("[Error] Can't find " + appElemnt);
@@ -372,6 +375,7 @@ public class method {
 
 			try {
 				driver[i].hideKeyboard();
+			
 			} catch (Exception ex) {
 				;
 			}
@@ -466,6 +470,7 @@ public class method {
 
 				try {
 					driver[j] = new SeeTestAndroidDriver(new URL("http://localhost:" + port + "/wd/hub"), cap[j]);
+				
 				} catch (Exception e) {
 					System.out.print("[Error] Can't find UDID: " + TestCase.DeviceInformation.deviceName.get(i));
 					System.out.println(" or can not find appPackage: " + TestCase.DeviceInformation.appPackage);
@@ -508,6 +513,7 @@ public class method {
 
 		for (int i = 0; i < driver.length; i++) {
 			try {
+				
 				p2 = driver[i].findElement(By.xpath(toElemnt)).getLocation();
 				p1 = driver[i].findElement(By.xpath(appElemnt)).getLocation();
 				driver[i].swipe(p1.x, p1.y, p1.x, p1.y - (p1.y - p2.y), 1000);

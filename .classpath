@@ -42,7 +42,11 @@
 	<classpathentry exported="true" kind="lib" path="C:/Users/jhih_chen/Desktop/test/APP_Vsaas_2.0_Android_invoke_excel_Result_try_catch/seetest_lib/selenium-edge-driver-2.53.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="C:/Users/jhih_chen/Desktop/test/APP_Vsaas_2.0_Android_invoke_excel_Result_try_catch/seetest_lib/selenium-firefox-driver-2.53.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="C:/Users/jhih_chen/Desktop/test/APP_Vsaas_2.0_Android_invoke_excel_Result_try_catch/seetest_lib/selenium-ie-driver-2.53.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="C:/Users/jhih_chen/Desktop/test/APP_Vsaas_2.0_Android_invoke_excel_Result_try_catch/seetest_lib/selenium-java-2.53.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/jhih_chen/Desktop/test/APP_Vsaas_2.0_Android_invoke_excel_Result_try_catch/seetest_lib/selenium-java-2.53.1.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="http://seleniumhq.github.io/selenium/docs/api/java/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry exported="true" kind="lib" path="C:/Users/jhih_chen/Desktop/test/APP_Vsaas_2.0_Android_invoke_excel_Result_try_catch/seetest_lib/selenium-leg-rc-2.53.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="C:/Users/jhih_chen/Desktop/test/APP_Vsaas_2.0_Android_invoke_excel_Result_try_catch/seetest_lib/selenium-remote-driver-2.53.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="C:/Users/jhih_chen/Desktop/test/APP_Vsaas_2.0_Android_invoke_excel_Result_try_catch/seetest_lib/selenium-safari-driver-2.53.1.jar"/>
