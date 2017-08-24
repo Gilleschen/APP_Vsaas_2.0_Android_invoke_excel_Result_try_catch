@@ -20,7 +20,7 @@
 
 5. APP&Device工作表輸入APP Packageanme、APP Avtivity、測試手機UDID、測試手機OS版本、待測試腳本(以_TestScript結尾的工作表)及APP_Android.jar路徑，範例如下圖：
 
-![image](https://github.com/Gilleschen/Android_invoke_excel/blob/master/picture/app_device_info_example.PNG)
+![image](https://github.com/Gilleschen/Android_invoke_excel/blob/master/picture/app_device_info_example2.PNG)
 
 6. 建立腳本：新增一工作表，工作表名稱須以_TestScript為結尾 (e.g. Login_TestScript)，目前支援指令如下: (大小寫有分，使用方式請參考TestScript.xlsm內說明工作表)
 
