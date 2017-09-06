@@ -11,7 +11,6 @@ import java.net.URL;
 import java.util.Calendar;
 import java.util.List;
 
-
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -26,7 +25,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import com.experitest.appium.SeeTestAndroidDriver;
 import com.experitest.appium.SeeTestCapabilityType;
-
 
 import io.appium.java_client.android.AndroidKeyCode;
 import io.appium.java_client.remote.AndroidMobileCapabilityType;
@@ -61,11 +59,19 @@ public class method {
 
 	public static void main(String[] args) throws NoSuchMethodException, SecurityException, IllegalAccessException,
 			IllegalArgumentException, InvocationTargetException, InstantiationException, IOException {
-
+		initial();
 		invokeFunction();
 		System.out.println("測試結束!!!!!!!!");
 		Process proc = Runtime.getRuntime().exec("explorer C:\\TUTK_QA_TestTool\\TestReport");// 開啟TestReport資料夾
 
+	}
+
+	public static void initial() {// 初始化CaseErrorList矩陣
+		for (int i = 0; i < CaseErrorList.length; i++) {
+			for (int j = 0; j < CaseErrorList[i].length; j++) {
+				CaseErrorList[i][j] = "";
+			}
+		}
 	}
 
 	public static void invokeFunction() throws NoSuchMethodException, SecurityException, IllegalAccessException,
@@ -479,7 +485,7 @@ public class method {
 	public void QuitAPP() {
 		for (int j = 0; j < driver.length; j++) {
 			driver[j].quit();// 離開APP後，寫入測試結果Pass或Error
-			
+
 			// 開啟Excel
 			try {
 				workBook = new XSSFWorkbook(new FileInputStream("C:\\TUTK_QA_TestTool\\TestReport\\TestReport.xlsm"));
